@@ -22,8 +22,8 @@ scene.add(directionalLight);
 
 // Array de imágenes (cambia las rutas por las tuyas)
 const images = [
-    { path: "images/img1.jpg", title: "Imagen 1", desc: "Descripción 1" },
-    { path: "images/img2.jpg", title: "Imagen 2", desc: "Descripción 2" },
+    { path: "images/1.jpg", title: "Imagen 1", desc: "Descripción 1" },
+    { path: "images/2.jpg", title: "Imagen 2", desc: "Descripción 2" },
     // Añade más imágenes...
 ];
 
