@@ -62,11 +62,14 @@
     camera.position.z = 50;
 
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.enableZoom = true;
     controls.enableRotate = false;
+    controls.enableZoom = true;
     controls.enablePan = true;
-    controls.mouseButtons.LEFT = null;
-    controls.mouseButtons.RIGHT = THREE.MOUSE.PAN;
+    controls.mouseButtons = {
+      LEFT: null,
+      MIDDLE: null,
+      RIGHT: THREE.MOUSE.PAN
+    };
 
     let imageMeshes = [];
     const loader = new THREE.TextureLoader();
@@ -112,13 +115,15 @@
           y = (Math.random() - 0.5) * 60;
           z = (Math.random() - 0.5) * 60;
         } else if (type === 'cross') {
-          if (i % 2 === 0) {
-            x = (i - center) * 8;
+          // Distribuir mitad horizontal, mitad vertical
+          if (i < imageMeshes.length / 2) {
+            x = (i - 2) * 12;
             y = 0;
           } else {
             x = 0;
-            y = (i - center) * 8;
+            y = (i - 6) * 12;
           }
+          z = 0;
         } else if (type === 'ellipse') {
           const angle = (i / imageMeshes.length) * 2 * Math.PI;
           x = radius * Math.cos(angle);
