@@ -60,7 +60,7 @@
       scene.add(group);
 
       for (let i = 0; i < 30; i++) {
-        const texture = loader.load(`img/${(i % 10) + 1}.jpg`); // usa 1.jpg a 10.jpg cíclicamente
+        const texture = loader.load(`./img/${(i % 10) + 1}.jpg`); // usa 1.jpg a 10.jpg cíclicamente
         const geometry = new THREE.PlaneGeometry(6, 4);
         const material = new THREE.MeshBasicMaterial({ map: texture });
         const mesh = new THREE.Mesh(geometry, material);
