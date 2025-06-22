@@ -31,12 +31,12 @@
     .concept-btn {
       display: flex;
       flex-direction: row;
-      align-items: center;
-      justify-content: flex-start;
+      align-items: flex-end;
+      gap: 8px;
       cursor: pointer;
-      font-size: 32px;
       user-select: none;
       position: relative;
+      transform: scale(0.65);
     }
 
     .kanji {
@@ -45,28 +45,46 @@
       color: black;
       transition: all 0.3s ease;
       text-shadow: none;
+      line-height: 1;
     }
 
     .label {
-      margin-left: 10px;
-      font-size: 18px;
-      color: #888;
-      transition: opacity 0.3s ease;
-    }
+  font-family: 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: #888;
+  transition: opacity 0.3s ease;
+  padding-bottom: 2px;           /* 🔧 Opcional para bajarlo un pelín más si lo necesitas */
+}
 
-    .concept-btn:hover .kanji,
-    .concept-btn.active .kanji {
-      text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
-    }
+    /* Hover y selección: fondo blanco, contorno negro */
+.concept-btn:hover .kanji,
+.concept-btn.active .kanji {
+  color: white;
+  text-shadow: 
+    1px 1px 0 #000, -1px -1px 0 #000,
+    1px -1px 0 #000, -1px 1px 0 #000;
+}
 
-    .concept-btn:hover .label,
-    .concept-btn.active .label {
-      opacity: 0;
-    }
+/* Hover y selección: oculta el nombre en español */
+.concept-btn:hover .label,
+.concept-btn.active .label {
+  opacity: 0;
+}
 
-    .concept-btn.random .kanji {
-      color: red;
-    }
+/* Ran(dom): kanji más pequeño */
+.concept-btn.random .kanji {
+  font-size: 28px;
+}
+
+/* Ran(dom): hover y activo → contorno rojo */
+.concept-btn.random:hover .kanji,
+.concept-btn.random.active .kanji {
+  color: white;
+  text-shadow:
+    1px 1px 0 red, -1px -1px 0 red,
+    1px -1px 0 red, -1px 1px 0 red;
+}
   </style>
 </head>
 <body>
