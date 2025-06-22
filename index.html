@@ -48,6 +48,11 @@
       line-height: 1;
     }
 
+     /* Animación sutil para kanjis normales */
+  .concept-btn:not(.random) .kanji {
+    animation: subtleVibe 3s infinite ease-in-out;
+  }
+
     .label {
   font-family: 'Times New Roman', serif;
   font-style: italic;
@@ -89,6 +94,15 @@ filter: drop-shadow(0 0 1px red)
         drop-shadow(1px 1px 0 red)
         drop-shadow(-1px -1px 0 red);
 }
+
+  /* Keyframes para vibración sutil */
+  @keyframes subtleVibe {
+    0%   { transform: translate(0, 0) rotate(0deg); }
+    25%  { transform: translate(0.3px, -0.3px) rotate(0.2deg); }
+    50%  { transform: translate(-0.3px, 0.3px) rotate(-0.2deg); }
+    75%  { transform: translate(0.2px, 0.2px) rotate(0.1deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+  }
   </style>
 </head>
 <body>
