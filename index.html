@@ -271,6 +271,7 @@ let imagesLoaded = 0;
 for (let i = 1; i <= totalImages; i++) {
   loader.load(`img/img-${i}.jpg`, texture => {
     const image = texture.image;
+    texture.needsUpdate = true;
 
     const checkAndAdd = () => {
       if (!image || !image.width || !image.height) {
@@ -286,17 +287,18 @@ for (let i = 1; i <= totalImages; i++) {
       const geometry = new THREE.PlaneGeometry(width, height);
       const material = new THREE.MeshBasicMaterial({ map: texture });
       const mesh = new THREE.Mesh(geometry, material);
-
-      // Distribución simple provisional: puedes cambiar esto cuando agrupes por concepto real
       mesh.userData.concept = ['cueva', 'nido', 'nube', 'arbol', 'random'][i % 5];
-
       scene.add(mesh);
       imageMeshes.push(mesh);
-      imagesLoaded++;
 
+      imagesLoaded++;
       if (imagesLoaded === totalImages) {
-        // ✅ Sólo cuando todas estén listas
         layoutImages('random');
+
+        // Esperamos a que termine el movimiento (850ms + margen) antes de encuadrar
+        setTimeout(() => {
+          animateCameraToFitView(imageMeshes);
+        }, 1000);
       }
     };
 
