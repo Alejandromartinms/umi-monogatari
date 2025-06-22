@@ -166,6 +166,27 @@ filter: drop-shadow(0 0 1px red)
   text-align: center;
   width: 100%;
 }
+
+/* 🔽 FOOTER DE LOGOS */
+#footer-logos {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+  z-index: 15;
+  pointer-events: none;
+}
+
+.footer-logo {
+  height: 50px;
+  max-width: 180px;
+  object-fit: contain;
+  opacity: 0.8;
+}       
   </style>
 </head>
 <body>
@@ -180,6 +201,12 @@ filter: drop-shadow(0 0 1px red)
     </div>
     <div class="subtitle">cuentos de ultramar</div>
   </div>
+
+  <!-- 🔽 FOOTER DE LOGOS INSTITUCIONALES -->
+<div id="footer-logos">
+  <img src="img/LOGO-ETSAG-NEGRO.png" alt="ETSA Logo" class="footer-logo" />
+  <img src="img/University-of-Granada.png" alt="Universidad de Granada Logo" class="footer-logo" />
+</div>
   
   <div id="ui">
     <div class="concept-btn" onclick="selectConcept('cueva')" id="btn-cueva">
