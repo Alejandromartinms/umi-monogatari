@@ -14,8 +14,14 @@
     }
 
     canvas {
-      display: block;
-    }
+  display: block;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+canvas.visible {
+  opacity: 1;
+}
 
     #ui {
       position: absolute;
@@ -296,14 +302,16 @@ imagePaths.forEach((path, index) => {
 
       imagesLoaded++;
       if (imagesLoaded === totalImages) {
-        // Distribuirlas primero
-        layoutImages('random');
+  layoutImages('random');
 
-        // Esperar a que terminen de moverse (850ms + margen)
-        setTimeout(() => {
-          animateCameraToFitView(imageMeshes);
-        }, 1100);
-      }
+  // Esperamos a que terminen de moverse
+  setTimeout(() => {
+    animateCameraToFitView(imageMeshes);
+
+    // Mostrar el canvas suavemente
+    canvas.classList.add('visible');
+  }, 1100);
+}
     };
 
     checkAndAdd();
