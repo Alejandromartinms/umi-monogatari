@@ -82,9 +82,7 @@ filter: drop-shadow(0 0 3px black)
         drop-shadow(-1px 1px 0 black);
 }
 
-/* Hover y selección: oculta el nombre en español */
-.concept-btn:hover .label,
-.concept-btn.active .label {
+.concept-btn.hide-label .label {
   opacity: 0;
 }
 
@@ -303,6 +301,24 @@ filter: drop-shadow(0 0 1px red)
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     });
-  </script>
+// Función que oculta la etiqueta del botón activo
+function hideLabel(button) {
+  document.querySelectorAll('.concept-btn').forEach(btn => btn.classList.remove('hide-label'));
+  button.classList.add('hide-label');
+}
+    
+// Escucha el clic en cada botón de concepto
+document.querySelectorAll('.concept-btn').forEach(btn => {
+  btn.addEventListener('click', e => {
+    hideLabel(btn);
+    e.stopPropagation(); // Evita que se propague al body
+  });
+});
+
+// Si se hace clic fuera de los botones (en canvas o fondo)
+document.body.addEventListener('click', () => {
+  document.querySelectorAll('.concept-btn').forEach(btn => btn.classList.remove('hide-label'));
+});
+    </script>
 </body>
 </html>
