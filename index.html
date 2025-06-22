@@ -82,6 +82,8 @@ filter: drop-shadow(0 0 3px black)
         drop-shadow(-1px 1px 0 black);
 }
 
+/* Hover o clase dinámica: oculta el nombre en español */
+.concept-btn:hover .label,
 .concept-btn.hide-label .label {
   opacity: 0;
 }
@@ -301,6 +303,7 @@ filter: drop-shadow(0 0 1px red)
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     });
+    
 // Función que oculta la etiqueta del botón activo
 function hideLabel(button) {
   document.querySelectorAll('.concept-btn').forEach(btn => btn.classList.remove('hide-label'));
