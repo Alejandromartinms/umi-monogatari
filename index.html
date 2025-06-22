@@ -268,19 +268,35 @@ filter: drop-shadow(0 0 1px red)
     const totalImages = 10;
 
     for (let i = 1; i <= totalImages; i++) {
-      loader.load(`img/${i}.jpg`, texture => {
-        const material = new THREE.MeshBasicMaterial({ map: texture });
-        const geometry = new THREE.PlaneGeometry(10, 7);
-        const mesh = new THREE.Mesh(geometry, material);
-        mesh.userData.concept = ['cueva', 'nido', 'nube', 'arbol', 'random'][i % 5]; // demo distribution
-        scene.add(mesh);
-        imageMeshes.push(mesh);
-        if (imageMeshes.length === totalImages) {
-          layoutImages('random');
-        }
-      });
-    }
+  loader.load(`img/${i}.jpg`, texture => {
+    const image = texture.image;
+    texture.needsUpdate = true;
 
+    const checkAndAdd = () => {
+      if (!image || !image.width || !image.height) {
+        setTimeout(checkAndAdd, 10); // Espera si la imagen aún no está cargada
+        return;
+      }
+
+      const aspect = image.width / image.height;
+      const baseHeight = 10; // Tamaño base de las imágenes
+      const width = baseHeight * aspect;
+      const height = baseHeight;
+
+      const geometry = new THREE.PlaneGeometry(width, height);
+      const material = new THREE.MeshBasicMaterial({ map: texture });
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.userData.concept = ['cueva', 'nido', 'nube', 'arbol', 'random'][i % 5];
+      scene.add(mesh);
+      imageMeshes.push(mesh);
+      if (imageMeshes.length === totalImages) {
+        layoutImages('random');
+      }
+    };
+
+    checkAndAdd();
+  });
+}
     function layoutImages(concept) {
   let visibleMeshes = imageMeshes;
   if (concept !== 'random') {
