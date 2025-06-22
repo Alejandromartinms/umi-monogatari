@@ -265,30 +265,33 @@ filter: drop-shadow(0 0 1px red)
     const loader = new THREE.TextureLoader();
     const imageMeshes = [];
     const conceptMap = {};  // To assign images to concepts later
-    const totalImages = 10;
+    const totalImages = 192;
 
-    for (let i = 1; i <= totalImages; i++) {
-  loader.load(`img/${i}.jpg`, texture => {
+for (let i = 1; i <= totalImages; i++) {
+  loader.load(`img/img-${i}.jpg`, texture => {
     const image = texture.image;
     texture.needsUpdate = true;
 
     const checkAndAdd = () => {
       if (!image || !image.width || !image.height) {
-        setTimeout(checkAndAdd, 10); // Espera si la imagen aún no está cargada
+        setTimeout(checkAndAdd, 10);
         return;
       }
 
       const aspect = image.width / image.height;
-      const baseHeight = 10; // Tamaño base de las imágenes
+      const baseHeight = 10;
       const width = baseHeight * aspect;
       const height = baseHeight;
 
       const geometry = new THREE.PlaneGeometry(width, height);
       const material = new THREE.MeshBasicMaterial({ map: texture });
       const mesh = new THREE.Mesh(geometry, material);
+
+      // Puedes distribuir conceptos con más lógica en el futuro si lo deseas
       mesh.userData.concept = ['cueva', 'nido', 'nube', 'arbol', 'random'][i % 5];
       scene.add(mesh);
       imageMeshes.push(mesh);
+
       if (imageMeshes.length === totalImages) {
         layoutImages('random');
       }
