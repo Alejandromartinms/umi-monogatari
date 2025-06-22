@@ -113,9 +113,62 @@ filter: drop-shadow(0 0 1px red)
   80%  { transform: translate(-0.5px, -1px) rotate(-0.4deg); }
   100% { transform: translate(0, 0) rotate(0deg); }
 }
+    
+ /* 🔶 Título centrado con icono */
+    #header {
+      position: absolute;
+      top: 30px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    .header-box {
+      display: flex;
+      align-items: center;
+      border-radius: 18px;
+      overflow: hidden;
+      backdrop-filter: blur(6px);
+      background: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .icon-box {
+      background: rgba(255, 255, 255, 0.25);
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+    }
+
+    .icon-box img {
+      height: 54px;
+      width: auto;
+    }
+
+    .title-box {
+      background: rgba(230, 230, 230, 0.95);
+      font-size: 20px;
+      font-weight: bold;
+      padding: 12px 20px;
+      font-family: 'Arial', sans-serif;
+      border-left: 1px solid rgba(0, 0, 0, 0.1);
+    }
   </style>
 </head>
 <body>
+
+  <!-- 🔶 TÍTULO SUPERIOR -->
+  <div id="header">
+    <div class="header-box">
+      <div class="icon-box">
+        <img src="img/Shin-Chan copia.png" alt="Shin-chan" />
+      </div>
+      <div class="title-box">UMI MONOGATARI</div>
+    </div>
+  </div>
+  
   <div id="ui">
     <div class="concept-btn" onclick="selectConcept('cueva')" id="btn-cueva">
       <div class="kanji">穴</div>
