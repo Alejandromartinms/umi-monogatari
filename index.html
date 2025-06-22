@@ -175,7 +175,7 @@ filter: drop-shadow(0 0 1px red)
   transform: translateX(-50%);
   display: flex;
   flex-direction: row;
-  align-items: flex-end; /* 🔧 asegura que estén alineados por la base */
+  align-items: flex-end;
   justify-content: center;
   gap: 40px;
   z-index: 15;
@@ -183,9 +183,14 @@ filter: drop-shadow(0 0 1px red)
 }
 
 .footer-logo {
-  height: 50px;
+  height: 57.5px; /* 15% más que 50px */
   object-fit: contain;
   opacity: 0.8;
+}
+
+/* 🔽 Solo para ETSAG: bajarlo un poco */
+.footer-logo.etsag {
+  margin-top: 5px; /* Ajusta la bajada según necesidad */
 }       
   </style>
 </head>
@@ -204,7 +209,7 @@ filter: drop-shadow(0 0 1px red)
 
   <!-- 🔽 FOOTER DE LOGOS INSTITUCIONALES -->
 <div id="footer-logos">
-  <img src="img/LOGO-ETSAG-NEGRO.png" alt="ETSA Logo" class="footer-logo" />
+  <img src="img/LOGO-ETSAG-NEGRO.png" alt="ETSA Logo" class="footer-logo etsag" />
   <img src="img/University-of-Granada.png" alt="Universidad de Granada Logo" class="footer-logo" />
 </div>
   
