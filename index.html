@@ -7,127 +7,134 @@
   <title>Floating Image Concepts</title>
   <style>
     body {
-      margin: 0;
-      overflow: hidden;
-      background-color: #eeeeee;
-      font-family: sans-serif;
-    }
+  margin: 0;
+  overflow: hidden;
+  background-color: #eeeeee;
+  font-family: sans-serif;
+}
 
-    canvas {
-      display: block;
-    }
+canvas {
+  display: block;
+}
 
-    #ui {
-      position: absolute;
-      top: 50%;
-      left: 40px;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      z-index: 10;
-    }
+#ui {
+  position: absolute;
+  top: 50%;
+  left: 40px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 10;
+}
 
-    .concept-btn {
-      display: flex;
-      flex-direction: row;
-      align-items: flex-end;
-      gap: 14px;
-      cursor: pointer;
-      user-select: none;
-      position: relative;
-      transform: scale(0.90);
-    }
+/* Botones de concepto */
+.concept-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 14px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
 
-    .kanji {
-      font-size: 48px;
-      font-weight: bold;
-      color: black;
-      transition: all 0.3s ease;
-      text-shadow: none;
-      line-height: 1;
-    }
-
-    .label {
+/* Texto en español */
+.label {
   font-family: 'Times New Roman', serif;
   font-style: italic;
   font-size: 16px;
   color: #888;
+  padding-bottom: 2px;
   transition: opacity 0.3s ease;
-  padding-bottom: 2px;           /* 🔧 Opcional para bajarlo un pelín más si lo necesitas */
 }
 
-    /* Hover y selección: fondo blanco, contorno negro */
-.concept-btn:hover .kanji,
-.concept-btn.active .kanji {
-  color: white;
-  text-shadow:
-    1px 0 0 #000, -1px 0 0 #000,
-    0 1px 0 #000, 0 -1px 0 #000,
-    2px 0 0 #000, -2px 0 0 #000,
-    0 2px 0 #000, 0 -2px 0 #000,
-    3px 0 0 #000, -3px 0 0 #000,
-    0 3px 0 #000, 0 -3px 0 #000,
-    2px 2px 0 #000, -2px -2px 0 #000,
-    -2px 2px 0 #000, 2px -2px 0 #000,
-    3px 3px 0 #000, -3px -3px 0 #000,
-    -3px 3px 0 #000, 3px -3px 0 #000;
+/* SVG base para los kanji */
+.kanji-svg {
+  display: block;
 }
 
-/* Hover y selección: oculta el nombre en español */
+/* Texto dentro del SVG */
+.kanji-svg text {
+  transition: all 0.3s ease;
+}
+
+/* Hover y activo: contorno negro, relleno blanco */
+.concept-btn:hover .kanji-svg text,
+.concept-btn.active .kanji-svg text {
+  fill: white;
+  stroke: black;
+  stroke-width: 4;
+}
+
+/* Ocultar la etiqueta en español al hacer hover o activar */
 .concept-btn:hover .label,
 .concept-btn.active .label {
   opacity: 0;
 }
 
-/* Ran(dom): kanji más pequeño */
-.concept-btn.random .kanji {
-  font-size: 28px;
-  margin-top: 10px;
-  margin-left: 14px; /* Ajusta este valor visualmente */
+/* ran(dom): estilo especial */
+.concept-btn.random .kanji-svg text {
+  font-size: 42px;
+  stroke: red;
+  fill: white;
 }
 
-/* Ran(dom): hover y activo → contorno rojo */
-.concept-btn.random:hover .kanji,
-.concept-btn.random.active .kanji {
-  color: white;
-  text-shadow:
-    1px 0 0 red, -1px 0 0 red,
-    0 1px 0 red, 0 -1px 0 red,
-    2px 0 0 red, -2px 0 0 red,
-    0 2px 0 red, 0 -2px 0 red,
-    3px 0 0 red, -3px 0 0 red,
-    0 3px 0 red, 0 -3px 0 red,
-    2px 2px 0 red, -2px -2px 0 red,
-    -2px 2px 0 red, 2px -2px 0 red,
-    3px 3px 0 red, -3px -3px 0 red,
-    -3px 3px 0 red, 3px -3px 0 red;
+/* ran(dom) al hacer hover o activo: contorno rojo */
+.concept-btn.random:hover .kanji-svg text,
+.concept-btn.random.active .kanji-svg text {
+  stroke: red;
+  stroke-width: 4;
+  fill: white;
 }
   </style>
 </head>
 <body>
   <div id="ui">
-    <div class="concept-btn" onclick="selectConcept('cueva')" id="btn-cueva">
-      <div class="kanji">穴</div>
-      <div class="label">cueva</div>
-    </div>
-    <div class="concept-btn" onclick="selectConcept('nido')" id="btn-nido">
-      <div class="kanji">巣</div>
-      <div class="label">nido</div>
-    </div>
-    <div class="concept-btn" onclick="selectConcept('nube')" id="btn-nube">
-      <div class="kanji">雲</div>
-      <div class="label">nube</div>
-    </div>
-    <div class="concept-btn" onclick="selectConcept('arbol')" id="btn-arbol">
-      <div class="kanji">樹</div>
-      <div class="label">árbol</div>
-    </div>
-    <div class="concept-btn random" onclick="selectConcept('random')" id="btn-random">
-      <div class="kanji">乱</div>
-      <div class="label">ran(dom)</div>
-    </div>
+  <!-- Cueva -->
+  <div class="concept-btn" onclick="filterByConcept('cueva')">
+    <svg class="kanji-svg" viewBox="0 0 100 100" width="48" height="48">
+      <text x="50%" y="65%" text-anchor="middle" dominant-baseline="middle"
+            fill="white" stroke="black" stroke-width="3" font-size="60" font-family="serif">穴</text>
+    </svg>
+    <span class="label">cueva</span>
   </div>
+
+  <!-- Nido -->
+  <div class="concept-btn" onclick="filterByConcept('nido')">
+    <svg class="kanji-svg" viewBox="0 0 100 100" width="48" height="48">
+      <text x="50%" y="65%" text-anchor="middle" dominant-baseline="middle"
+            fill="white" stroke="black" stroke-width="3" font-size="60" font-family="serif">巣</text>
+    </svg>
+    <span class="label">nido</span>
+  </div>
+
+  <!-- Nube -->
+  <div class="concept-btn" onclick="filterByConcept('nube')">
+    <svg class="kanji-svg" viewBox="0 0 100 100" width="48" height="48">
+      <text x="50%" y="65%" text-anchor="middle" dominant-baseline="middle"
+            fill="white" stroke="black" stroke-width="3" font-size="60" font-family="serif">雲</text>
+    </svg>
+    <span class="label">nube</span>
+  </div>
+
+  <!-- Árbol -->
+  <div class="concept-btn" onclick="filterByConcept('arbol')">
+    <svg class="kanji-svg" viewBox="0 0 100 100" width="48" height="48">
+      <text x="50%" y="65%" text-anchor="middle" dominant-baseline="middle"
+            fill="white" stroke="black" stroke-width="3" font-size="60" font-family="serif">樹</text>
+    </svg>
+    <span class="label">árbol</span>
+  </div>
+
+  <!-- Ran(dom) -->
+  <div class="concept-btn random" onclick="filterByConcept('random')">
+    <svg class="kanji-svg random" viewBox="0 0 100 100" width="48" height="48">
+      <text x="50%" y="65%" text-anchor="middle" dominant-baseline="middle"
+            fill="white" stroke="red" stroke-width="3" font-size="42" font-family="serif">乱</text>
+    </svg>
+    <span class="label">ran(dom)</span>
+  </div>
+</div>
 
   <canvas id="scene"></canvas>
 
