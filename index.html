@@ -50,9 +50,18 @@
 
      /* Animación sutil para kanjis normales */
   .concept-btn:not(.random) .kanji {
-    animation: subtleVibe 2s infinite ease-in-out;
+  animation-name: vibeAlt;
+  animation-duration: 2.8s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
   }
 
+    /* Retrasos individuales para desincronizar */
+.concept-btn:nth-child(1):not(.random) .kanji { animation-delay: 0s; }
+.concept-btn:nth-child(2):not(.random) .kanji { animation-delay: 0.3s; }
+.concept-btn:nth-child(3):not(.random) .kanji { animation-delay: 0.6s; }
+.concept-btn:nth-child(4):not(.random) .kanji { animation-delay: 0.9s; }
+    
     .label {
   font-family: 'Times New Roman', serif;
   font-style: italic;
@@ -96,12 +105,12 @@ filter: drop-shadow(0 0 1px red)
 }
 
   /* Keyframes para vibración sutil */
-  @keyframes subtleVibe {
+  @keyframes vibeAlt {
   0%   { transform: translate(0, 0) rotate(0deg); }
-  20%  { transform: translate(1px, -1px) rotate(0.6deg); }
-  40%  { transform: translate(-1px, 1px) rotate(-0.6deg); }
-  60%  { transform: translate(0.8px, -0.8px) rotate(0.4deg); }
-  80%  { transform: translate(-0.8px, 0.8px) rotate(-0.4deg); }
+  20%  { transform: translate(1px, -1.5px) rotate(0.8deg); }
+  40%  { transform: translate(-1.2px, 1.2px) rotate(-0.6deg); }
+  60%  { transform: translate(1px, 0.5px) rotate(0.4deg); }
+  80%  { transform: translate(-0.5px, -1px) rotate(-0.4deg); }
   100% { transform: translate(0, 0) rotate(0deg); }
 }
   </style>
