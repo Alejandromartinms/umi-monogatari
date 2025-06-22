@@ -61,17 +61,11 @@
 .concept-btn:hover .kanji,
 .concept-btn.active .kanji {
   color: white;
-  text-shadow:
-    1px 0 0 #000, -1px 0 0 #000,
-    0 1px 0 #000, 0 -1px 0 #000,
-    2px 0 0 #000, -2px 0 0 #000,
-    0 2px 0 #000, 0 -2px 0 #000,
-    3px 0 0 #000, -3px 0 0 #000,
-    0 3px 0 #000, 0 -3px 0 #000,
-    2px 2px 0 #000, -2px -2px 0 #000,
-    -2px 2px 0 #000, 2px -2px 0 #000,
-    3px 3px 0 #000, -3px -3px 0 #000,
-    -3px 3px 0 #000, 3px -3px 0 #000;
+filter: drop-shadow(0 0 1px black)
+        drop-shadow(1px 1px 0 black)
+        drop-shadow(-1px -1px 0 black)
+        drop-shadow(1px -1px 0 black)
+        drop-shadow(-1px 1px 0 black);
 }
 
 /* Hover y selección: oculta el nombre en español */
@@ -91,17 +85,11 @@
 .concept-btn.random:hover .kanji,
 .concept-btn.random.active .kanji {
   color: white;
-  text-shadow:
-    1px 0 0 red, -1px 0 0 red,
-    0 1px 0 red, 0 -1px 0 red,
-    2px 0 0 red, -2px 0 0 red,
-    0 2px 0 red, 0 -2px 0 red,
-    3px 0 0 red, -3px 0 0 red,
-    0 3px 0 red, 0 -3px 0 red,
-    2px 2px 0 red, -2px -2px 0 red,
-    -2px 2px 0 red, 2px -2px 0 red,
-    3px 3px 0 red, -3px -3px 0 red,
-    -3px 3px 0 red, 3px -3px 0 red;
+filter: drop-shadow(0 0 1px red)
+        drop-shadow(1px 1px 0 red)
+        drop-shadow(-1px -1px 0 red)
+        drop-shadow(1px -1px 0 red)
+        drop-shadow(-1px 1px 0 red);
 }
   </style>
 </head>
