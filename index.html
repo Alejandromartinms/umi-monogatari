@@ -32,7 +32,7 @@
       display: flex;
       flex-direction: row;
       align-items: flex-end;
-      gap: 8px;
+      gap: 14px;
       cursor: pointer;
       user-select: none;
       position: relative;
@@ -51,7 +51,7 @@
     .label {
   font-family: 'Times New Roman', serif;
   font-style: italic;
-  font-size: 14px;
+  font-size: 16px;
   color: #888;
   transition: opacity 0.3s ease;
   padding-bottom: 2px;           /* 🔧 Opcional para bajarlo un pelín más si lo necesitas */
@@ -61,9 +61,11 @@
 .concept-btn:hover .kanji,
 .concept-btn.active .kanji {
   color: white;
-  text-shadow: 
+  text-shadow:
+    3px 0 0 #000, -3px 0 0 #000,
+    0 3px 0 #000, 0 -3px 0 #000,
     3px 3px 0 #000, -3px -3px 0 #000,
-    3px -3px 0 #000, -3px 3px 0 #000;
+    -3px 3px 0 #000, 3px -3px 0 #000;
 }
 
 /* Hover y selección: oculta el nombre en español */
@@ -76,7 +78,7 @@
 .concept-btn.random .kanji {
   font-size: 28px;
   margin-top: 10px;
-  margin-left: 16px; /* Ajusta este valor visualmente */
+  margin-left: 14px; /* Ajusta este valor visualmente */
 }
 
 /* Ran(dom): hover y activo → contorno rojo */
@@ -84,8 +86,10 @@
 .concept-btn.random.active .kanji {
   color: white;
   text-shadow:
+    3px 0 0 red, -3px 0 0 red,
+    0 3px 0 red, 0 -3px 0 red,
     3px 3px 0 red, -3px -3px 0 red,
-    3px -3px 0 red, -3px 3px 0 red;
+    -3px 3px 0 red, 3px -3px 0 red;
 }
   </style>
 </head>
