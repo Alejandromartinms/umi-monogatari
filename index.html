@@ -126,40 +126,36 @@ filter: drop-shadow(0 0 1px red)
     }
 
     .header-box {
-      display: flex;
-      align-items: center;
-      border-radius: 18px;
-      overflow: hidden;
-      backdrop-filter: blur(6px);
-      background: rgba(255, 255, 255, 0.3);
-      box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
-    }
-
-    .icon-box {
-      background: rgba(255, 255, 255, 0.25);
-      padding: 8px 12px;
-      display: flex;
-      align-items: center;
-    }
-
-    .icon-box img {
-      height: 54px;
-      width: auto;
-    }
-
-    .title-box {
-  background: rgba(230, 230, 230, 0.95);
-  font-size: 20px;
-  font-weight: 400; /* más fino */
-  color: #444; /* más grisáceo */
-  padding: 12px 20px;
-  font-family: 'Arial', sans-serif;
-  border-left: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 0 16px 16px 0; /* redondeamos solo lado derecho */
-  height: 100%; /* se alinea con el icono */
   display: flex;
   align-items: center;
-    }
+  border-radius: 20px;
+  padding: 8px 12px; /* espaciado interno */
+  backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+  gap: 12px;
+}
+
+.icon-box {
+  display: flex;
+  align-items: center;
+}
+
+.icon-box img {
+  height: 54px;
+  width: auto;
+}
+
+.title-box {
+  background: rgba(230, 230, 230, 0.95);
+  font-size: 20px;
+  font-weight: 400;
+  color: #444;
+  padding: 10px 16px;
+  font-family: 'Arial', sans-serif;
+  border-radius: 12px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.05);
+}
   </style>
 </head>
 <body>
