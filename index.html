@@ -168,17 +168,22 @@ filter: drop-shadow(0 0 1px red)
 }
 
 /* 🔽 FOOTER DE LOGOS */
-.footer-logo {
-  height: 50px;
-  max-width: 180px;
-  object-fit: contain;
-  opacity: 0.8;
-  align-self: flex-end; /* ⚠️ Alinea los logos por su base */
+#footer-logos {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end; /* 🔧 asegura que estén alineados por la base */
+  justify-content: center;
+  gap: 40px;
+  z-index: 15;
+  pointer-events: none;
 }
 
 .footer-logo {
   height: 50px;
-  max-width: 180px;
   object-fit: contain;
   opacity: 0.8;
 }       
