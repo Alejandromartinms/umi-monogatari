@@ -267,9 +267,10 @@ const imageMeshes = [];
 const conceptMap = {};
 const totalImages = 192;
 let imagesLoaded = 0;
+const imagePaths = Array.from({ length: totalImages }, (_, i) => `img/img-${i + 1}.jpg`);
 
-for (let i = 1; i <= totalImages; i++) {
-  loader.load(`img/img-${i}.jpg`, texture => {
+imagePaths.forEach((path, index) => {
+  loader.load(path, texture => {
     const image = texture.image;
     texture.needsUpdate = true;
 
@@ -287,24 +288,27 @@ for (let i = 1; i <= totalImages; i++) {
       const geometry = new THREE.PlaneGeometry(width, height);
       const material = new THREE.MeshBasicMaterial({ map: texture });
       const mesh = new THREE.Mesh(geometry, material);
-      mesh.userData.concept = ['cueva', 'nido', 'nube', 'arbol', 'random'][i % 5];
+
+      mesh.userData.concept = ['cueva', 'nido', 'nube', 'arbol', 'random'][index % 5];
+
       scene.add(mesh);
       imageMeshes.push(mesh);
 
       imagesLoaded++;
       if (imagesLoaded === totalImages) {
+        // Distribuirlas primero
         layoutImages('random');
 
-        // Esperamos a que termine el movimiento (850ms + margen) antes de encuadrar
+        // Esperar a que terminen de moverse (850ms + margen)
         setTimeout(() => {
           animateCameraToFitView(imageMeshes);
-        }, 1000);
+        }, 1100);
       }
     };
 
     checkAndAdd();
   });
-}
+});
     function layoutImages(concept) {
   let visibleMeshes = imageMeshes;
   if (concept !== 'random') {
