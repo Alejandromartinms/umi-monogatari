@@ -319,23 +319,21 @@ filter: drop-shadow(0 0 1px red)
 function animateCameraToFitView(meshes) {
   if (meshes.length === 0) return;
 
-  const center = new THREE.Vector3();
-  meshes.forEach(mesh => center.add(mesh.position));
-  center.divideScalar(meshes.length);
+  // 🔵 Calcular centro y radio de la bounding sphere
+  const box = new THREE.Box3();
+  meshes.forEach(mesh => box.expandByObject(mesh));
+  const center = box.getCenter(new THREE.Vector3());
+  const size = box.getSize(new THREE.Vector3());
+  const radius = size.length() * 0.5;
 
-  let maxDistance = 0;
-  meshes.forEach(mesh => {
-    const distance = mesh.position.distanceTo(center);
-    if (distance > maxDistance) maxDistance = distance;
-  });
-
+  // 🔵 Ajustar distancia según fov y viewport
   const fov = camera.fov * (Math.PI / 180);
   const aspect = window.innerWidth / window.innerHeight;
-
-  const fitHeightDistance = maxDistance / Math.tan(fov / 2);
-  const fitWidthDistance = maxDistance / (Math.tan(fov / 2) * aspect);
+  const fitHeightDistance = radius / Math.tan(fov / 2);
+  const fitWidthDistance = radius / (Math.tan(fov / 2) * aspect);
   const distance = Math.max(fitHeightDistance, fitWidthDistance) * 1.2;
 
+  // 🔵 Posicionar cámara (manteniéndola frontal en eje Z)
   const newCamPos = new THREE.Vector3(center.x, center.y, center.z + distance);
 
   new TWEEN.Tween(camera.position)
