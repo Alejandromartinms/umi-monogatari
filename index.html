@@ -311,8 +311,42 @@ filter: drop-shadow(0 0 1px red)
           })
           .start();
       });
+      
+      // 📸 Mueve la cámara para encuadrar las imágenes visibles
+  animateCameraToFitView(visibleMeshes);  
     }
+    
+function animateCameraToFitView(meshes) {
+  // Centra en el medio del conjunto
+  const center = new THREE.Vector3();
+  meshes.forEach(mesh => center.add(mesh.position));
+  center.divideScalar(meshes.length);
 
+  // Calcula la distancia máxima de separación al centro
+  let maxDistance = 0;
+  meshes.forEach(mesh => {
+    const distance = mesh.position.distanceTo(center);
+    if (distance > maxDistance) maxDistance = distance;
+  });
+
+  // Define la distancia de la cámara
+  const targetDistance = maxDistance * 2.2;
+
+  // Posición final de la cámara (mirando desde arriba en Z)
+  const newCamPos = new THREE.Vector3(center.x, center.y, center.z + targetDistance);
+
+  // Usa TWEEN para suavizar el movimiento
+  new TWEEN.Tween(camera.position)
+    .to({ x: newCamPos.x, y: newCamPos.y, z: newCamPos.z }, 1000)
+    .easing(TWEEN.Easing.Quadratic.InOut)
+    .start();
+
+  // También actualiza el target del control para centrar vista
+  new TWEEN.Tween(controls.target)
+    .to({ x: center.x, y: center.y, z: center.z }, 1000)
+    .easing(TWEEN.Easing.Quadratic.InOut)
+    .start();
+}
     function selectConcept(concept) {
       document.querySelectorAll('.concept-btn').forEach(btn => btn.classList.remove('active'));
       document.getElementById('btn-' + concept).classList.add('active');
