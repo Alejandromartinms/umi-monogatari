@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -302,100 +301,76 @@ imagePaths.forEach((path, index) => {
     texture.needsUpdate = true;
 
     const checkAndAdd = () => {
-      if (!image || !image.width || !image.height) {
-        setTimeout(checkAndAdd, 10);
-        return;
-      }
+  if (!image || !image.width || !image.height) {
+    setTimeout(checkAndAdd, 10);
+    return;
+  }
 
-      const aspect = image.width / image.height;
-      const baseHeight = 10;
-      const width = baseHeight * aspect;
-      const height = baseHeight;
+  const aspect = image.width / image.height;
+  const baseHeight = 10;
+  const width = baseHeight * aspect;
+  const height = baseHeight;
 
-      // Creamos un contenedor para marco + imagen + textos
-const group = new THREE.Group();
+  // Contenedor marco + imagen + texto
+  const group = new THREE.Group();
 
-// Marco gris claro: muy ajustado excepto arriba
-const marginBottom = 0.2; // Margen inferior base
-const marginX = marginBottom; // Laterales igual que margen inferior
-const marginTop = 2; // Espacio generoso arriba para texto
+  // Marco gris claro con borde blanco MUY fino
+  const frameGeometry = new THREE.PlaneGeometry(width + 1.2, height + 1.2); // marco más ajustado verticalmente
+  const frameMaterial = new THREE.MeshBasicMaterial({
+    color: 0xdddddd
+  });
+  const frameMesh = new THREE.Mesh(frameGeometry, frameMaterial);
+  frameMesh.position.z = -0.01;
+  group.add(frameMesh);
 
-const frameGeometry = new THREE.PlaneGeometry(width + marginX * 2, height + marginTop + marginBottom);
-const frameMaterial = new THREE.MeshBasicMaterial({ color: 0xdddddd });
-const frameMesh = new THREE.Mesh(frameGeometry, frameMaterial);
+  // Imagen encima del marco
+  const imageMaterial = new THREE.MeshBasicMaterial({ map: texture });
+  const imageMesh = new THREE.Mesh(new THREE.PlaneGeometry(width, height), imageMaterial);
+  group.add(imageMesh);
 
-// Desplazamos el marco hacia abajo para que el espacio extra quede arriba
-frameMesh.position.set(0, marginTop / 2, -0.01);
-group.add(frameMesh);
+  // Contorno blanco fino (simulado con borde muy ajustado)
+  const edgeGeometry = new THREE.EdgesGeometry(frameGeometry);
+  const edgeMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: 0.4 });
+  const edgeLines = new THREE.LineSegments(edgeGeometry, edgeMaterial);
+  group.add(edgeLines);
 
-// Borde blanco más fino visualmente
-const edgeGeometry = new THREE.EdgesGeometry(frameGeometry);
-const edgeMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
-const edgeLines = new THREE.LineSegments(edgeGeometry, edgeMaterial);
-edgeLines.position.copy(frameMesh.position);
-group.add(edgeLines);
+  // Texto del concepto (en español, alineado a la izquierda)
+  const loaderFont = new THREE.FontLoader();
+  loaderFont.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function (font) {
+    const textGeo = new THREE.TextGeometry('PRIMITIVO', {
+      font: font,
+      size: 0.5,
+      height: 0,
+    });
 
-// Imagen
-const imageMaterial = new THREE.MeshBasicMaterial({ map: texture });
-const imageMesh = new THREE.Mesh(new THREE.PlaneGeometry(width, height), imageMaterial);
-group.add(imageMesh);
+    const textMat = new THREE.MeshBasicMaterial({ color: 0x444444 });
+    const textMesh = new THREE.Mesh(textGeo, textMat);
 
-// Texto → se carga una sola vez por imagen
-const loaderFont = new THREE.FontLoader();
-loaderFont.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function (font) {
-  
-  // Kanji + Español en línea horizontal
-const textGeoJP = new THREE.TextGeometry('原初', {
-  font: font,
-  size: 1.2,
-  height: 0,
-});
-const textGeoES = new THREE.TextGeometry('primitivo', {
-  font: font,
-  size: 0.5,
-  height: 0,
-});
-const textMat = new THREE.MeshBasicMaterial({ color: 0x444444 });
-const textMeshJP = new THREE.Mesh(textGeoJP, textMat);
-const textMeshES = new THREE.Mesh(textGeoES, textMat);
+    textGeo.computeBoundingBox();
 
-textGeoJP.computeBoundingBox();
-textGeoES.computeBoundingBox();
+    // Alineado a la izquierda
+    const leftOffset = -width / 2 + 0.5;
+    const topOffset = height / 2 + 0.1; // reducido el espacio superior
 
-const textWidthJP = textGeoJP.boundingBox.max.x - textGeoJP.boundingBox.min.x;
-const textWidthES = textGeoES.boundingBox.max.x - textGeoES.boundingBox.min.x;
-const spacing = 0.6; // espacio horizontal entre textos
+    textMesh.position.set(leftOffset, topOffset, 0.1);
+    group.add(textMesh);
+  });
 
-// Posiciones centradas en línea
-const totalTextWidth = textWidthJP + spacing + textWidthES;
-const startX = -totalTextWidth / 2;
-const textY = height / 2 + 0.8; // altura dentro del marco superior
+  // Asignar y guardar
+  group.userData.concept = ['cueva', 'nido', 'nube', 'arbol', 'random'][index % 5];
+  scene.add(group);
+  imageMeshes.push(group);
 
-textMeshJP.position.set(startX, textY, 0.1);
-textMeshES.position.set(startX + textWidthJP + spacing, textY, 0.1);
+  imagesLoaded++;
+  if (imagesLoaded === totalImages) {
+    layoutImages('random');
 
-group.add(textMeshJP);
-group.add(textMeshES);
-});
-
-// Añadimos el grupo
-group.userData.concept = ['cueva', 'nido', 'nube', 'arbol', 'random'][index % 5];
-scene.add(group);
-imageMeshes.push(group);
-
-      imagesLoaded++;
-      if (imagesLoaded === totalImages) {
-  layoutImages('random');
-
-  // Esperamos a que terminen de moverse
-  setTimeout(() => {
-    animateCameraToFitView(imageMeshes);
-
-    // Mostrar el canvas suavemente
-    canvas.classList.add('visible');
-  }, 1100);
-}
-    };
+    setTimeout(() => {
+      animateCameraToFitView(imageMeshes);
+      canvas.classList.add('visible');
+    }, 1100);
+  }
+};
 
     checkAndAdd();
   });
