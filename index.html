@@ -349,7 +349,7 @@ imagePaths.forEach((path, index) => {
     const textMesh = new THREE.Mesh(textGeo, textMat);
     textGeo.computeBoundingBox();
     const textHeight = textGeo.boundingBox.max.y - textGeo.boundingBox.min.y;
-    textMesh.position.set(-width / 2 + 0.2, height / 2 + 0.5, 0.1);
+    textMesh.position.set(-width / 2 + 0.2, height / 2 + 0.35, 0.1);
     group.add(textMesh);
   });
 
