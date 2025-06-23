@@ -288,6 +288,28 @@ filter: drop-shadow(0 0 1px red)
       RIGHT: THREE.MOUSE.PAN
     };
 
+    // ⬇️ Añade esto justo aquí para habilitar zoom hacia el puntero del ratón
+controls.addEventListener('wheel', function(event) {
+  if (event.ctrlKey || event.metaKey) return;
+
+  const rect = renderer.domElement.getBoundingClientRect();
+  const mouse = new THREE.Vector2(
+    ((event.clientX - rect.left) / rect.width) * 2 - 1,
+    -((event.clientY - rect.top) / rect.height) * 2 + 1
+  );
+
+  const raycaster = new THREE.Raycaster();
+  raycaster.setFromCamera(mouse, camera);
+
+  const point = raycaster.ray.origin.clone().add(
+    raycaster.ray.direction.clone().multiplyScalar(
+      controls.target.distanceTo(camera.position)
+    )
+  );
+
+  controls.target.copy(point);
+});
+
     const loader = new THREE.TextureLoader();
 const imageMeshes = [];
 const conceptMap = {};
