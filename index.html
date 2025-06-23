@@ -315,16 +315,19 @@ imagePaths.forEach((path, index) => {
       // Creamos un contenedor para marco + imagen + textos
 const group = new THREE.Group();
 
-// Marco translúcido (detrás)
+// Marco gris claro
 const frameGeometry = new THREE.PlaneGeometry(width + 1.2, height + 2);
-const frameMaterial = new THREE.MeshBasicMaterial({
-  color: 0xffffff,
-  transparent: true,
-  opacity: 0.25
-});
+const frameMaterial = new THREE.MeshBasicMaterial({ color: 0xdddddd });
 const frameMesh = new THREE.Mesh(frameGeometry, frameMaterial);
 frameMesh.position.z = -0.01;
 group.add(frameMesh);
+
+// Borde negro fino
+const edgeGeometry = new THREE.EdgesGeometry(frameGeometry);
+const edgeMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
+const edgeLines = new THREE.LineSegments(edgeGeometry, edgeMaterial);
+edgeLines.position.copy(frameMesh.position);
+group.add(edgeLines);
 
 // Imagen
 const imageMaterial = new THREE.MeshBasicMaterial({ map: texture });
