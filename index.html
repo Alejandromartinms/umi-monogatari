@@ -316,8 +316,8 @@ imagePaths.forEach((path, index) => {
 const group = new THREE.Group();
 
 // Marco gris claro: muy ajustado excepto arriba
-const marginX = 0.2; // Muy poco margen lateral
-const marginBottom = 0.2; // Muy poco margen inferior
+const marginBottom = 0.2; // Margen inferior base
+const marginX = marginBottom; // Laterales igual que margen inferior
 const marginTop = 2; // Espacio generoso arriba para texto
 
 const frameGeometry = new THREE.PlaneGeometry(width + marginX * 2, height + marginTop + marginBottom);
@@ -343,30 +343,39 @@ group.add(imageMesh);
 // Texto → se carga una sola vez por imagen
 const loaderFont = new THREE.FontLoader();
 loaderFont.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function (font) {
-  // Kanji
-  const textGeoJP = new THREE.TextGeometry('原初', {
-    font: font,
-    size: 1.2,
-    height: 0,
-  });
-  const textMat = new THREE.MeshBasicMaterial({ color: 0x444444 });
-  const textMeshJP = new THREE.Mesh(textGeoJP, textMat);
-  textGeoJP.computeBoundingBox();
-  const textWidth = textGeoJP.boundingBox.max.x - textGeoJP.boundingBox.min.x;
-  textMeshJP.position.set(-textWidth / 2, height / 2 + 0.6, 0.1);
-  group.add(textMeshJP);
+  
+  // Kanji + Español en línea horizontal
+const textGeoJP = new THREE.TextGeometry('原初', {
+  font: font,
+  size: 1.2,
+  height: 0,
+});
+const textGeoES = new THREE.TextGeometry('primitivo', {
+  font: font,
+  size: 0.5,
+  height: 0,
+});
+const textMat = new THREE.MeshBasicMaterial({ color: 0x444444 });
+const textMeshJP = new THREE.Mesh(textGeoJP, textMat);
+const textMeshES = new THREE.Mesh(textGeoES, textMat);
 
-  // Español
-  const textGeoES = new THREE.TextGeometry('primitivo', {
-    font: font,
-    size: 0.5,
-    height: 0,
-  });
-  const textMeshES = new THREE.Mesh(textGeoES, textMat);
-  textGeoES.computeBoundingBox();
-  const textWidthES = textGeoES.boundingBox.max.x - textGeoES.boundingBox.min.x;
-  textMeshES.position.set(-textWidthES / 2, height / 2 - 0.2, 0.1);
-  group.add(textMeshES);
+textGeoJP.computeBoundingBox();
+textGeoES.computeBoundingBox();
+
+const textWidthJP = textGeoJP.boundingBox.max.x - textGeoJP.boundingBox.min.x;
+const textWidthES = textGeoES.boundingBox.max.x - textGeoES.boundingBox.min.x;
+const spacing = 0.6; // espacio horizontal entre textos
+
+// Posiciones centradas en línea
+const totalTextWidth = textWidthJP + spacing + textWidthES;
+const startX = -totalTextWidth / 2;
+const textY = height / 2 + 0.8; // altura dentro del marco superior
+
+textMeshJP.position.set(startX, textY, 0.1);
+textMeshES.position.set(startX + textWidthJP + spacing, textY, 0.1);
+
+group.add(textMeshJP);
+group.add(textMeshES);
 });
 
 // Añadimos el grupo
