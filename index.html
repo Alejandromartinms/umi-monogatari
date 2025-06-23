@@ -311,55 +311,65 @@ imagePaths.forEach((path, index) => {
   const width = baseHeight * aspect;
   const height = baseHeight;
 
-  // Contenedor marco + imagen + texto
-  const group = new THREE.Group();
+  // Creamos un contenedor para marco + imagen + textos
+const group = new THREE.Group();
 
-  // Marco gris claro con borde blanco MUY fino
-  const frameGeometry = new THREE.PlaneGeometry(width + 1.2, height + 1.2); // marco más ajustado verticalmente
-  const frameMaterial = new THREE.MeshBasicMaterial({
-    color: 0xdddddd
+// Dimensiones de imagen
+const aspect = image.width / image.height;
+const baseHeight = 10;
+const width = baseHeight * aspect;
+const height = baseHeight;
+
+// Medidas del marco
+const framePaddingX = 0.2;  // mínimo lateral
+const framePaddingBottom = 0.2; // mínimo inferior
+const framePaddingTop = 1.4; // más espacio superior
+
+const frameWidth = width + framePaddingX * 2;
+const frameHeight = height + framePaddingTop + framePaddingBottom;
+
+// Marco gris claro con borde blanco fino
+const frameGeometry = new THREE.PlaneGeometry(frameWidth, frameHeight);
+const frameMaterial = new THREE.MeshBasicMaterial({ color: 0xdddddd });
+const frameMesh = new THREE.Mesh(frameGeometry, frameMaterial);
+
+// Línea blanca fina como borde del marco
+const edgeGeometry = new THREE.EdgesGeometry(frameGeometry);
+const edgeMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: 0.3 });
+const edgeLines = new THREE.LineSegments(edgeGeometry, edgeMaterial);
+
+// Ajuste de profundidad y grupo
+frameMesh.position.set(0, framePaddingBottom - framePaddingTop / 2, -0.01);
+edgeLines.position.copy(frameMesh.position);
+group.add(frameMesh);
+group.add(edgeLines);
+
+// Imagen centrada dentro del marco
+const imageMaterial = new THREE.MeshBasicMaterial({ map: texture });
+const imageMesh = new THREE.Mesh(new THREE.PlaneGeometry(width, height), imageMaterial);
+imageMesh.position.set(0, 0, 0);
+group.add(imageMesh);
+
+// Texto “PRIMITIVO” alineado a la izquierda arriba
+const loaderFont = new THREE.FontLoader();
+loaderFont.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function (font) {
+  const textGeo = new THREE.TextGeometry('PRIMITIVO', {
+    font: font,
+    size: 0.6,
+    height: 0,
   });
-  const frameMesh = new THREE.Mesh(frameGeometry, frameMaterial);
-  frameMesh.position.z = -0.01;
-  group.add(frameMesh);
+  const textMat = new THREE.MeshBasicMaterial({ color: 0x444444 });
+  const textMesh = new THREE.Mesh(textGeo, textMat);
+  textGeo.computeBoundingBox();
+  const textHeight = textGeo.boundingBox.max.y - textGeo.boundingBox.min.y;
+  textMesh.position.set(-width / 2 + 0.2, height / 2 + 0.5, 0.1);
+  group.add(textMesh);
+});
 
-  // Imagen encima del marco
-  const imageMaterial = new THREE.MeshBasicMaterial({ map: texture });
-  const imageMesh = new THREE.Mesh(new THREE.PlaneGeometry(width, height), imageMaterial);
-  group.add(imageMesh);
-
-  // Contorno blanco fino (simulado con borde muy ajustado)
-  const edgeGeometry = new THREE.EdgesGeometry(frameGeometry);
-  const edgeMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: 0.4 });
-  const edgeLines = new THREE.LineSegments(edgeGeometry, edgeMaterial);
-  group.add(edgeLines);
-
-  // Texto del concepto (en español, alineado a la izquierda)
-  const loaderFont = new THREE.FontLoader();
-  loaderFont.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function (font) {
-    const textGeo = new THREE.TextGeometry('PRIMITIVO', {
-      font: font,
-      size: 0.5,
-      height: 0,
-    });
-
-    const textMat = new THREE.MeshBasicMaterial({ color: 0x444444 });
-    const textMesh = new THREE.Mesh(textGeo, textMat);
-
-    textGeo.computeBoundingBox();
-
-    // Alineado a la izquierda
-    const leftOffset = -width / 2 + 0.5;
-    const topOffset = height / 2 + 0.1; // reducido el espacio superior
-
-    textMesh.position.set(leftOffset, topOffset, 0.1);
-    group.add(textMesh);
-  });
-
-  // Asignar y guardar
-  group.userData.concept = ['cueva', 'nido', 'nube', 'arbol', 'random'][index % 5];
-  scene.add(group);
-  imageMeshes.push(group);
+// Añadir grupo a escena
+group.userData.concept = ['cueva', 'nido', 'nube', 'arbol', 'random'][index % 5];
+scene.add(group);
+imageMeshes.push(group);
 
   imagesLoaded++;
   if (imagesLoaded === totalImages) {
