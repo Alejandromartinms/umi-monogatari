@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  ...
+  
+<!-- 🔗 Carga del archivo de conceptos -->
+<script src="imageConceptMap.js"></script>
+
+</head>
+<body>
+  ...
+  <script>
+    ...
+
+  // Obtener concepto desde el map
+  const imgName = path.split('/').pop();
+  const { tag, group } = imageConceptMap[imgName] || { tag: 'PRIMITIVO', group: 'random' };
+
+  const loaderFont = new THREE.FontLoader();
+  loaderFont.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function (font) {
+    const textGeo = new THREE.TextGeometry(tag.toUpperCase(), {
+      font: font,
+      size: 0.5,
+      height: 0,
+    });
+    const textMat = new THREE.MeshBasicMaterial({ color: 0x444444 });
+    const textMesh = new THREE.Mesh(textGeo, textMat);
+    textGeo.computeBoundingBox();
+    textMesh.position.set(-width / 2 + 0.2, height / 2 + 0.3, 0.1);
+    group.add(textMesh);
+  });
+
+  group.userData.concept = group;
+
+    ...
+  </script>
+</body>
+</html>
