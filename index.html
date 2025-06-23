@@ -301,6 +301,7 @@ imagePaths.forEach((path, index) => {
     texture.needsUpdate = true;
 
     const checkAndAdd = () => {
+  const image = texture.image;
   if (!image || !image.width || !image.height) {
     setTimeout(checkAndAdd, 10);
     return;
@@ -311,65 +312,50 @@ imagePaths.forEach((path, index) => {
   const width = baseHeight * aspect;
   const height = baseHeight;
 
-  // Creamos un contenedor para marco + imagen + textos
-const group = new THREE.Group();
+  const group = new THREE.Group();
 
-// Dimensiones de imagen
-const aspect = image.width / image.height;
-const baseHeight = 10;
-const width = baseHeight * aspect;
-const height = baseHeight;
+  const framePaddingX = 0.2;
+  const framePaddingBottom = 0.2;
+  const framePaddingTop = 1.6; // +15% respecto al anterior
 
-// Medidas del marco
-const framePaddingX = 0.2;  // mínimo lateral
-const framePaddingBottom = 0.2; // mínimo inferior
-const framePaddingTop = 1.4; // más espacio superior
+  const frameWidth = width + framePaddingX * 2;
+  const frameHeight = height + framePaddingTop + framePaddingBottom;
 
-const frameWidth = width + framePaddingX * 2;
-const frameHeight = height + framePaddingTop + framePaddingBottom;
+  const frameGeometry = new THREE.PlaneGeometry(frameWidth, frameHeight);
+  const frameMaterial = new THREE.MeshBasicMaterial({ color: 0xdddddd });
+  const frameMesh = new THREE.Mesh(frameGeometry, frameMaterial);
+  frameMesh.position.set(0, framePaddingBottom - framePaddingTop / 2, -0.01);
+  group.add(frameMesh);
 
-// Marco gris claro con borde blanco fino
-const frameGeometry = new THREE.PlaneGeometry(frameWidth, frameHeight);
-const frameMaterial = new THREE.MeshBasicMaterial({ color: 0xdddddd });
-const frameMesh = new THREE.Mesh(frameGeometry, frameMaterial);
+  const edgeGeometry = new THREE.EdgesGeometry(frameGeometry);
+  const edgeMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
+  const edgeLines = new THREE.LineSegments(edgeGeometry, edgeMaterial);
+  edgeLines.position.copy(frameMesh.position);
+  group.add(edgeLines);
 
-// Línea blanca fina como borde del marco
-const edgeGeometry = new THREE.EdgesGeometry(frameGeometry);
-const edgeMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: 0.3 });
-const edgeLines = new THREE.LineSegments(edgeGeometry, edgeMaterial);
+  const imageMaterial = new THREE.MeshBasicMaterial({ map: texture });
+  const imageMesh = new THREE.Mesh(new THREE.PlaneGeometry(width, height), imageMaterial);
+  imageMesh.position.set(0, 0, 0);
+  group.add(imageMesh);
 
-// Ajuste de profundidad y grupo
-frameMesh.position.set(0, framePaddingBottom - framePaddingTop / 2, -0.01);
-edgeLines.position.copy(frameMesh.position);
-group.add(frameMesh);
-group.add(edgeLines);
-
-// Imagen centrada dentro del marco
-const imageMaterial = new THREE.MeshBasicMaterial({ map: texture });
-const imageMesh = new THREE.Mesh(new THREE.PlaneGeometry(width, height), imageMaterial);
-imageMesh.position.set(0, 0, 0);
-group.add(imageMesh);
-
-// Texto “PRIMITIVO” alineado a la izquierda arriba
-const loaderFont = new THREE.FontLoader();
-loaderFont.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function (font) {
-  const textGeo = new THREE.TextGeometry('PRIMITIVO', {
-    font: font,
-    size: 0.6,
-    height: 0,
+  const loaderFont = new THREE.FontLoader();
+  loaderFont.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function (font) {
+    const textGeo = new THREE.TextGeometry('PRIMITIVO', {
+      font: font,
+      size: 0.6,
+      height: 0,
+    });
+    const textMat = new THREE.MeshBasicMaterial({ color: 0x444444 });
+    const textMesh = new THREE.Mesh(textGeo, textMat);
+    textGeo.computeBoundingBox();
+    const textHeight = textGeo.boundingBox.max.y - textGeo.boundingBox.min.y;
+    textMesh.position.set(-width / 2 + 0.2, height / 2 + 0.5, 0.1);
+    group.add(textMesh);
   });
-  const textMat = new THREE.MeshBasicMaterial({ color: 0x444444 });
-  const textMesh = new THREE.Mesh(textGeo, textMat);
-  textGeo.computeBoundingBox();
-  const textHeight = textGeo.boundingBox.max.y - textGeo.boundingBox.min.y;
-  textMesh.position.set(-width / 2 + 0.2, height / 2 + 0.5, 0.1);
-  group.add(textMesh);
-});
 
-// Añadir grupo a escena
-group.userData.concept = ['cueva', 'nido', 'nube', 'arbol', 'random'][index % 5];
-scene.add(group);
-imageMeshes.push(group);
+  group.userData.concept = ['cueva', 'nido', 'nube', 'arbol', 'random'][index % 5];
+  scene.add(group);
+  imageMeshes.push(group);
 
   imagesLoaded++;
   if (imagesLoaded === totalImages) {
