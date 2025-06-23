@@ -443,19 +443,18 @@ document.body.addEventListener('click', () => {
   document.querySelectorAll('.concept-btn').forEach(btn => btn.classList.remove('hide-label'));
 });
     
-    <script>
-      const ranKanji = document.querySelector('.concept-btn.random .kanji');
+      // 🔁 Vibración periódica del kanji ran(dom)
+const ranKanji = document.querySelector('.concept-btn.random .kanji');
 
-      function triggerRanVibration() {
-        ranKanji.classList.add('vibrate-once');
-        setTimeout(() => {
-          ranKanji.classList.remove('vibrate-once');
-        }, 1200);
-      }
+function triggerRanVibration() {
+  ranKanji.classList.add('vibrate-once');
+  setTimeout(() => {
+    ranKanji.classList.remove('vibrate-once');
+  }, 1200);
+}
 
-      triggerRanVibration();
-      setInterval(triggerRanVibration, 45000);
-    </script>
-
+triggerRanVibration();
+setInterval(triggerRanVibration, 45000);
+</script>
 </body>
 </html>
