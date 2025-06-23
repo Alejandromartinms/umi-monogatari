@@ -316,7 +316,7 @@ imagePaths.forEach((path, index) => {
 
   const framePaddingX = 0.2;
   const framePaddingBottom = 0.2;
-  const framePaddingTop = 1.6; // +15% respecto al anterior
+  const framePaddingTop = 1.15; // ← nuevo valor reducido
 
   const frameWidth = width + framePaddingX * 2;
   const frameHeight = height + framePaddingTop + framePaddingBottom;
@@ -342,7 +342,7 @@ imagePaths.forEach((path, index) => {
   loaderFont.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function (font) {
     const textGeo = new THREE.TextGeometry('PRIMITIVO', {
       font: font,
-      size: 0.6,
+      size: 0.5,
       height: 0,
     });
     const textMat = new THREE.MeshBasicMaterial({ color: 0x444444 });
