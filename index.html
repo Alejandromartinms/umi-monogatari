@@ -324,7 +324,7 @@ imagePaths.forEach((path, index) => {
   const frameGeometry = new THREE.PlaneGeometry(frameWidth, frameHeight);
   const frameMaterial = new THREE.MeshBasicMaterial({ color: 0xdddddd });
   const frameMesh = new THREE.Mesh(frameGeometry, frameMaterial);
-  frameMesh.position.set(0, framePaddingBottom - framePaddingTop / 2, -0.01);
+  frameMesh.position.set(0, height / 2 - frameHeight / 2 + framePaddingBottom, -0.01);
   group.add(frameMesh);
 
   const edgeGeometry = new THREE.EdgesGeometry(frameGeometry);
