@@ -288,10 +288,11 @@ filter: drop-shadow(0 0 1px red)
       RIGHT: THREE.MOUSE.PAN
     };
 
-    // ⬇️ Añade esto justo aquí para habilitar zoom hacia el puntero del ratón
-controls.addEventListener('wheel', function(event) {
-  if (event.ctrlKey || event.metaKey) return;
+    // Habilitar zoom hacia el puntero del ratón
+renderer.domElement.addEventListener('wheel', function(event) {
+  event.preventDefault();
 
+  // Calculamos coordenadas normalizadas del ratón
   const rect = renderer.domElement.getBoundingClientRect();
   const mouse = new THREE.Vector2(
     ((event.clientX - rect.left) / rect.width) * 2 - 1,
@@ -301,11 +302,26 @@ controls.addEventListener('wheel', function(event) {
   const raycaster = new THREE.Raycaster();
   raycaster.setFromCamera(mouse, camera);
 
-  const point = raycaster.ray.origin.clone().add(
-    raycaster.ray.direction.clone().multiplyScalar(
-      controls.target.distanceTo(camera.position)
-    )
+  // Plano perpendicular a la cámara en la posición actual del target
+  const plane = new THREE.Plane();
+  plane.setFromNormalAndCoplanarPoint(
+    camera.getWorldDirection(new THREE.Vector3()).clone().negate(),
+    controls.target
   );
+
+  const intersection = new THREE.Vector3();
+  raycaster.ray.intersectPlane(plane, intersection);
+
+  // Calculamos la diferencia entre el punto de intersección y el target actual
+  const delta = new THREE.Vector3().subVectors(intersection, controls.target);
+
+  // Determinar la dirección del zoom
+  const zoomFactor = event.deltaY > 0 ? 1.1 : 0.9;
+
+  // Ajustamos la cámara hacia el puntero
+  camera.position.addScaledVector(delta, 1 - zoomFactor);
+  controls.target.addScaledVector(delta, 1 - zoomFactor);
+});
 
   controls.target.copy(point);
 });
